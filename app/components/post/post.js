@@ -20,6 +20,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import {NavigationTypes} from 'app/constants';
 import FileAttachmentList from 'app/components/file_attachment_list';
+import FormattedDate from 'app/components/formatted_date';
 import FormattedText from 'app/components/formatted_text';
 import FormattedTime from 'app/components/formatted_time';
 import MattermostIcon from 'app/components/mattermost_icon';
@@ -64,6 +65,7 @@ class Post extends PureComponent {
         tooltipVisible: PropTypes.bool,
         theme: PropTypes.object.isRequired,
         onPress: PropTypes.func,
+        isSearchResult: PropTypes.bool,
         actions: PropTypes.shape({
             createPost: PropTypes.func.isRequired,
             deletePost: PropTypes.func.isRequired,
@@ -72,6 +74,10 @@ class Post extends PureComponent {
             setPostTooltipVisible: PropTypes.func.isRequired,
             unflagPost: PropTypes.func.isRequired
         }).isRequired
+    };
+
+    static defaultProps = {
+        isSearchResult: false
     };
 
     constructor(props) {
@@ -627,6 +633,11 @@ class Post extends PureComponent {
                                 <View style={{flexDirection: 'row', flex: 1}}>
                                     {displayName}
                                     <View style={style.timeContainer}>
+                                        {this.props.isSearchResult &&
+                                        <Text style={style.time}>
+                                            <FormattedTime value={this.props.post.create_at}/>
+                                        </Text>
+                                        }
                                         <Text style={style.time}>
                                             <FormattedTime value={this.props.post.create_at}/>
                                         </Text>
